@@ -1,0 +1,19 @@
+INFO:test:page open
+INFO:test:Attempting to click drop-down button
+INFO:test:Drop-down button clicked
+INFO:test:Attempting to click calendar drop-down
+INFO:test:Calendar clicked
+INFO:test:Attempting to select date 17th
+INFO:test:Date selected
+INFO:test:Changing player count
+INFO:test:Clicking player change button
+INFO:test:Button selected
+INFO:test:Changing players to 3
+INFO:test:3 players selected
+INFO:test:Selecting begin time box
+INFO:test:Selecting time drop-down box
+INFO:test:Selecting 8:30
+INFO:test:Selecting search button
+INFO:test:Results time...
+
+INFO:test:Your search did not return any matching results. Please try changing some of your filter settings and search again.
