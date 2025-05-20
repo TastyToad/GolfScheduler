@@ -63,7 +63,7 @@ def change_player_count(driver , wait): #add possible iterations over this for f
      log.info("Changing players to 3")
      time.sleep(1)
      wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="numberofplayers_vm_1_wrap"]/div/ul/li[3]')))  
-     driver.find_element(By.XPATH, '//*[@id="numberofplayers_vm_1_wrap"]/div/ul/li[3]').click()
+     driver.find_element(By.XPATH, '//*[@id="numberofplayers_vm_1_wrap"]/div/ul/li[1]').click()
      time.sleep(1)
      log.info("3 players selected")
  
@@ -119,18 +119,17 @@ def select_date(driver,wait,saturday):  #needs to be able to itterate over satur
 
 def get_dates():
     today = datetime.date.today()
-    end_date = today + datetime.timedelta(days=31)
-    current = today 
+    end_date = today + datetime.timedelta(days=7)
+    current = today
 
     saturdays = []
 
     while current <= end_date:
-        saturdays.append(current.strftime("%d"))
-        current += datetime.timedelta(days=7)
-    
-    return saturdays
-  
+        if current.weekday() == 5:  # 5 represents Saturday
+            saturdays.append(current.strftime("%d"))
+        current += datetime.timedelta(days=1)
 
+    return saturdays
 
 def check_tee_times(driver,wait):
     
@@ -141,16 +140,30 @@ def check_tee_times(driver,wait):
     time.sleep(1)
 
 
-def get_results(driver,wait):
+def get_noresults(driver,wait):
 
     #stores and prints the results. , needs the ability to store the data that will come from a sucesssfull multiple runs
-    log.info("Results time...\n")
+    log.info("getting noresutlss message...\n")
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="grwebsearch_noresultsmessage"]')))  
     text = driver.find_element(By.XPATH, '//*[@id="grwebsearch_noresultsmessage"]').text
     log.info(text)
 
+    return text
     
+def get_results (driver,wait):
+    #get the avaliable   time slots ,  tee time , holes, and avaliable slots:
+    log.info("attemting to get the avaliable  tee times, holes, and avaliable slots ")
+    
+
+    #needs to iterate over the table and lable cells and store the in list of dics    //*[@id="grwebsearch_output_table"]  
+    available []
         
+   
+   
+    
+    
+    
+    
     # use positive time outputs to update an ics and subscribe an outlook callendar too it so that it will sync and change , 
 
 
@@ -163,14 +176,27 @@ wait = set_wait(driver)
 open_page(driver)
 saturdays = get_dates()
 
+
 for saturday in saturdays:
-    print (saturday)
-    change_player_count(driver , wait)
-    select_tee_time(driver,wait)
-    select_date(driver,wait,saturday)
-    check_tee_times(driver , wait)
-    get_results(driver,wait)
+   
+   print ("\n", saturday , "\n")
+    
+   change_player_count(driver , wait)
+   
+   select_tee_time(driver,wait)
+   
+   select_date(driver,wait,saturday)
+   
+   check_tee_times(driver , wait)
+   
+   try:
+        noresult = get_noresults(driver,wait)
+         print (noresult)
+    except:
+        continue 
+   
 
 
 
-driver.quit()
+
+#driver.quit()
